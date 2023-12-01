@@ -1,0 +1,33 @@
+[
+  {
+    "name": "Market",
+    "id": 40476,
+    "keywords": [
+      "Market",
+      "market",
+      "getir",
+      "Getir",
+      "Migros",
+      "migros"
+    ]
+  },
+  {
+    "name": "Eğlence",
+    "id": 63070,
+    "keywords": [
+      "steam",
+      "sinema"
+    ]
+  },
+  {
+    "name": "Benzin",
+    "id": 19321,
+    "keywords": [
+      "akaryakit",
+      "benzinlik",
+      "benzin",
+      "mazot",
+      "yakit"
+    ]
+  }
+]

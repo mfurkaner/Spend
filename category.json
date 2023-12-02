@@ -36,5 +36,15 @@
       "getir",
       "migros"
     ]
+  },
+  {
+    "name": "Sağlık",
+    "id": 32253,
+    "keywords": [
+      "eczane",
+      "ilaç",
+      "ilac",
+      "hastane"
+    ]
   }
 ]

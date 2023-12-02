@@ -21,10 +21,10 @@ impl Currency{
     }
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Clone, Copy)]
 pub struct Money{
-    amount : f32,
-    currency : Currency
+    pub amount : f32,
+    pub currency : Currency
 }
 
 impl Money {
@@ -57,6 +57,6 @@ impl Printable for Money{
         }else{
             camount = amount.bright_green().bold();
         }
-        println!("{}",  camount);
+        print!("{}",  camount);
     }
 }

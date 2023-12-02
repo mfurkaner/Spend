@@ -31,7 +31,7 @@ fn main() {
     db.read_categories();
 
     Category::print_existing_categories();
- /* 
+ 
     let tx1 = Transaction::new(
         Money::new(-150.0, Currency::TL),
         Date { day: 2, month: 10, year: 2023 }, 
@@ -43,11 +43,11 @@ fn main() {
         String::from("getir siparişi"));
 
     let tx3 = Transaction::new(
-        Money::new(2200.0, Currency::TL),
+        Money::new(-2200.0, Currency::TL),
         Date { day: 3, month: 10, year: 2023 },
-        String::from("ersag ödemesi"));
+        String::from("hastane ödemesi"));
 
-        let tx4 = Transaction::new(
+    let tx4 = Transaction::new(
             Money::new(-231.0, Currency::TL),
             Date { day: 3, month: 10, year: 2023 }, 
             String::from("getiryemek.com"));
@@ -59,8 +59,10 @@ fn main() {
     wallet1.add_tx(tx3);
     wallet1.add_tx(tx4);
 
-    wallet1.print();*/
+    wallet1.print();
 
+
+    wallet1.print_category_dist();
     
 
     //db.generate_category();

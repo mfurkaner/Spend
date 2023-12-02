@@ -55,13 +55,33 @@ impl Database {
     }
 
     pub fn edit_category(&self){
-        let mut command = String::new();
-        print!("Enter the {} of the category you want to edit\n : ", "id".bold());
-        _ = io::stdout().flush();
-        _ = io::stdin().read_line(&mut command);
-        let id : u16 = command.trim_end().to_string().parse().unwrap();
+        let mut c : Box<Category>;
+        let mut id : u16;
+        loop {
+            let mut command = String::new();
+            print!("Enter the {} of the category you want to edit (return : '{}')\n : ", "id".bold(), ".q".red());
+            _ = io::stdout().flush();
+            _ = io::stdin().read_line(&mut command);
+            id = match command.trim_end().to_string().parse() {
+                Ok(a) => a,
+                Err(_) => {
+                    if(command.trim_end() == ".q"){
+                        return;
+                    }else{
+                        continue;
+                    }
+                },
+            };
+    
+            match Category::get_by_id(id) {
+                Some(a) => {
+                    c = a;
+                    break;
+                },
+                None => eprint!("ERROR: Category {} not found", id),
+            };
+        }
 
-        let c = Category::get_by_id(id).unwrap();
         let mut name = c.name.to_string();
         let mut kws : Vec<String> = Vec::new();
         for s in c.keywords.iter(){
@@ -114,7 +134,7 @@ impl Database {
                 panic!("Unknown command");
             }
         }
-
+        
         Category::replace(id, name, kws);
     }
 

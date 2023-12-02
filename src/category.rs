@@ -1,18 +1,18 @@
-use std::rc::Rc;
+use std::{rc::Rc, str::FromStr};
 use serde::{Serialize, Deserialize};
 use serde_json;
 use rand::prelude::*;
 use crate::traits::Printable;
+ 
 
-
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Clone)]
 pub struct Category{
     pub name : String,
     pub id : u16,
     pub keywords : Vec<String>,
 }
 
-static mut EXISTING_CATEGORIES : Vec<Rc<Category>> = Vec::new();
+static mut EXISTING_CATEGORIES : Vec<Box<Category>> = Vec::new();
 
 pub const UNKNOWN_CATEGORY : Category = Category{
     name : String::new(),
@@ -44,8 +44,8 @@ impl Category {
         rv
     }
 
-    pub fn new(name : String, kw : Vec<String>) -> Rc<Category>{
-        let nc = Rc::new(Category{ name : name , id : Category::generate_id() , keywords : kw});
+    pub fn new(name : String, kw : Vec<String>) -> Box<Category>{
+        let nc = Box::new(Category{ name : name , id : Category::generate_id() , keywords : kw});
         unsafe{
             EXISTING_CATEGORIES.push(nc.clone());
         }
@@ -54,7 +54,7 @@ impl Category {
 
     pub fn replace(id : u16, name : String, kw : Vec<String>){
         Category::remove_by_id(id);
-        let nc = Rc::new(Category{ name : name , id : id , keywords : kw});
+        let nc = Box::new(Category{ name : name , id : id , keywords : kw});
         unsafe{
             EXISTING_CATEGORIES.push(nc.clone());
         }
@@ -62,7 +62,7 @@ impl Category {
 
     pub fn insert_into_existing_categories(cat : Category){
         unsafe{
-            EXISTING_CATEGORIES.push(Rc::new(cat));
+            EXISTING_CATEGORIES.push(Box::new(cat));
         }
     }
 
@@ -106,7 +106,10 @@ impl Category {
         None
     }
 
-    pub fn get_by_id(id : u16) -> Option<Rc<Category>>{
+    pub fn get_by_id(id : u16) -> Option<Box<Category>>{
+        if id == 0 {
+            return Some(Box::new(UNKNOWN_CATEGORY));
+        }
         unsafe{
             for i in 0..EXISTING_CATEGORIES.len() {
                 if EXISTING_CATEGORIES[i].id == id {

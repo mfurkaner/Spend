@@ -1,25 +1,5 @@
 [
   {
-    "name": "Market",
-    "id": 40476,
-    "keywords": [
-      "Market",
-      "market",
-      "getir",
-      "Getir",
-      "Migros",
-      "migros"
-    ]
-  },
-  {
-    "name": "Eğlence",
-    "id": 63070,
-    "keywords": [
-      "steam",
-      "sinema"
-    ]
-  },
-  {
     "name": "Benzin",
     "id": 19321,
     "keywords": [
@@ -28,6 +8,33 @@
       "benzin",
       "mazot",
       "yakit"
+    ]
+  },
+  {
+    "name": "Maaş",
+    "id": 25834,
+    "keywords": [
+      "maaş",
+      "maas"
+    ]
+  },
+  {
+    "name": "Eğlence",
+    "id": 63070,
+    "keywords": [
+      "steam",
+      "sinema",
+      "netflix",
+      "prime"
+    ]
+  },
+  {
+    "name": "Market",
+    "id": 40476,
+    "keywords": [
+      "market",
+      "getir",
+      "migros"
     ]
   }
 ]

@@ -60,15 +60,11 @@ fn main() {
     wallet1.add_tx(tx4);
 
     wallet1.print();*/
+
     
 
     //db.generate_category();
-    db.edit_category();
-    Category::print_existing_categories();
-    db.generate_category();
-    Category::print_existing_categories();
-    db.remove_category();
-    Category::print_existing_categories();
+    db.category_terminal_change();
 
     db.save_categories();
 

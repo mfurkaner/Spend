@@ -103,6 +103,7 @@ impl Database {
                 for i in 0..kws.len() {
                     if kws[i] == rk.trim_end(){
                         kws.remove(i);
+                        break;
                     }
                 }
             }
@@ -135,6 +136,29 @@ impl Database {
         if command.trim_end() == "y"{
             Category::remove_by_id(id);
             println!("Category removed.");
+        }
+    }
+    
+    pub fn category_terminal_change(&mut self){
+        loop{
+            let mut command = String::new();
+            println!("Enter the action for the category database you want to invoke : ");
+            println!("- {} : {}\n- {} : {}\n- {} : {}\n- {} : {}\n- {} : {}", 
+            "add category".blue().italic(), ".a".blue().italic(), 
+            "edit category".green().italic(), ".e".green().italic(),
+            "remove category".yellow().italic(), ".r".yellow().italic(),
+            "print category database".magenta().italic(), ".p".magenta().italic(),
+            "stop".red(), ".q".red());
+            _ = io::stdout().flush();
+            _ = io::stdin().read_line(&mut command);
+            match command.trim_end(){
+                ".a" => self.generate_category(),
+                ".e" => self.edit_category(),
+                ".r" => self.remove_category(),
+                ".p" => Category::print_existing_categories(),
+                ".q" => break,
+                _ => {}
+            }
         }
     }
     //// CATEGORY DATABASE IMPL END

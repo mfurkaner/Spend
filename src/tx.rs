@@ -3,7 +3,6 @@ use crate::money::Money;
 use crate::category::Category;
 use crate::traits::Printable;
 
-use std::rc::Rc;
 use serde::{Serialize, Deserialize};
 
 #[derive(Serialize, Deserialize, Clone)]

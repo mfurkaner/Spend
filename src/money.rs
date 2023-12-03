@@ -32,7 +32,7 @@ impl Money {
         Money{amount : amount, currency : currency}
     }
 
-    pub fn as_tl(&self) -> f32 {
+    pub fn _as_tl(&self) -> f32 {
         match self.currency {
             Currency::TL => self.amount,
             _ => 0.0
@@ -40,7 +40,7 @@ impl Money {
     }
     
     pub fn add(& mut self, other : &Money){
-        if(self.currency == other.currency){
+        if self.currency == other.currency{
             self.amount = self.amount + other.amount;
         }
         else{
@@ -49,18 +49,18 @@ impl Money {
     }
 
     pub fn from_str(source : &str) -> Option<Money>{
-        struct tp{
+        struct Tp{
             curr : Currency,
             kws : Vec<&'static str>
-        };
+        }
         let knowns = [
-            tp{curr: Currency::TL, 
+            Tp{curr: Currency::TL, 
                 kws: ["TL", "₺", "tl"].to_vec()
             },
-            tp{curr: Currency::USD, 
+            Tp{curr: Currency::USD, 
                 kws: ["USD", "$", "usd"].to_vec()
             },
-            tp{curr: Currency::EUR, 
+            Tp{curr: Currency::EUR, 
                 kws: ["EUR", "€", "eur"].to_vec()
             },
         ];
@@ -68,7 +68,7 @@ impl Money {
         let mut found_curr = false;
         
         let mut v : Vec<&str> = source.split(' ').collect();
-        let mut n : String;
+        let n : String;
 
         if v.len() == 3{
             for i in 0..v.len(){
@@ -96,7 +96,7 @@ impl Money {
             for i in v{
                 let amount : f32 = match i.replace(".", "").replace(",", ".").parse(){
                     Ok(x) => x,
-                    Err(e) => continue,
+                    Err(_) => continue,
                 };
                 return Some(Money::new(amount, curr));
             }

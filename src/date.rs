@@ -31,7 +31,7 @@ impl Date{
             for elem in v{
                 let _ : u16 = match elem.parse(){
                     Ok(x) => x,
-                    Err(x) => {
+                    Err(_) => {
                         return false;
                     }
                 };

@@ -68,7 +68,7 @@ impl Application{
     
             match fs::metadata(command.trim_end()){
                 Ok(_) => {},
-                Err(e) => {
+                Err(_) => {
                     println!("{} adlı dosya bulunamadı!", command.trim_end());
                     continue;
                 }
@@ -79,7 +79,7 @@ impl Application{
                 None => {eprintln!("{} adlı dosyada girdi bulunamadı!", command.trim_end());},
                 Some(txs) => {
                     for tx in txs{
-                        if(tx.money.amount < 0.0){
+                        if tx.money.amount < 0.0 {
                             self.wallet.add_tx(tx);
                         }
                     }

@@ -23,7 +23,7 @@ impl XlsxParser {
                 if row[0].is_string() == false {
                     continue;
                 }
-                else if (Date::can_parse(row[0].as_string().unwrap().as_str()) == false){
+                else if Date::can_parse(row[0].as_string().unwrap().as_str()) == false{
                     continue;
                 }
 
@@ -56,7 +56,7 @@ impl XlsxParser {
                                 }
                             }
                         },
-                        other => {continue;}
+                        _ => {continue;}
                     }
                 }
 

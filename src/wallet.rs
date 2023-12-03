@@ -1,5 +1,4 @@
 use std::io::{self, Write};
-use std::rc::Rc;
 
 use crossterm::style::Stylize;
 
@@ -56,7 +55,7 @@ impl Wallet{
         self.transactions.push(tx);
     }
 
-    pub fn add_tx_new(&mut self, date : Date, money: Money, desc : &str, category_id : u16) {
+    pub fn _add_tx_new(&mut self, date : Date, money: Money, desc : &str, category_id : u16) {
         self.money.add(&money);
         self.transactions.push(Transaction{
             date : date,
@@ -219,7 +218,7 @@ impl Wallet{
             }
             else{
                 for j in 0..categories_in.len(){
-                    if(categories_in[j] == c.name){
+                    if categories_in[j] == c.name{
                         categories_money[j].add(&self.transactions[i].money);
                     }
                 }

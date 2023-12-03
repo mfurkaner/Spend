@@ -8,21 +8,7 @@ mod database;
 mod parser;
 mod application;
 
-use std::alloc::System;
-
 use application::Application;
-use category::Category;
-use date::Date;
-use parser::XlsxParser;
-use traits::Printable;
-use tx::Transaction;
-use money::{Money, Currency};
-use wallet::Wallet;
-use database::Database;
-
-
-
-use calamine::{Reader, Xlsx, open_workbook};
 
 fn main() {
     /* 

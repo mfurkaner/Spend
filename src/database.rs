@@ -55,7 +55,7 @@ impl Database {
     }
 
     pub fn edit_category(&self){
-        let mut c : Box<Category>;
+        let c : Box<Category>;
         loop {
             let mut command = String::new();
             Category::print_existing_category_names();
@@ -126,7 +126,7 @@ impl Database {
                 ".q" => {
                     break;
                 }
-                other => {
+                _ => {
                     eprintln!("Bilinmeyen komut! Girdiğiniz komutu kontrol ediniz : {}", command.trim_end());
                 }
             }

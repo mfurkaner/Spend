@@ -19,13 +19,80 @@
     ]
   },
   {
-    "name": "Eğlence",
-    "id": 63070,
+    "name": "Sağlık",
+    "id": 32253,
     "keywords": [
-      "steam",
-      "sinema",
+      "eczane",
+      "ilaç",
+      "ilac",
+      "hastane"
+    ]
+  },
+  {
+    "name": "Fatura",
+    "id": 60142,
+    "keywords": [
+      "enerjisa",
+      "enerji",
+      "elektrik",
+      "telekom",
+      "vodafone",
+      "doğalgaz",
+      "dogalgaz"
+    ]
+  },
+  {
+    "name": "Abonelikler",
+    "id": 22596,
+    "keywords": [
+      "linkedin",
       "netflix",
       "prime"
+    ]
+  },
+  {
+    "name": "Banka komisyonları",
+    "id": 15958,
+    "keywords": [
+      "faiz"
+    ]
+  },
+  {
+    "name": "Vergi",
+    "id": 135,
+    "keywords": [
+      "nilüfer beled",
+      "v.d."
+    ]
+  },
+  {
+    "name": "Araba",
+    "id": 1954,
+    "keywords": [
+      "petrol",
+      "akaryakıt",
+      "akaryakit",
+      "benzin",
+      "mazot",
+      "hgs",
+      "ikizogullari",
+      "ist-izm",
+      "otoyol",
+      "mobipa"
+    ]
+  },
+  {
+    "name": "Dışarıda harcamalar",
+    "id": 33832,
+    "keywords": [
+      "dunkin",
+      "baboş",
+      "ekler",
+      "mado",
+      "nevale",
+      "pasta",
+      "ciceksepeti",
+      "restoran"
     ]
   },
   {
@@ -34,17 +101,39 @@
     "keywords": [
       "market",
       "getir",
-      "migros"
+      "migros",
+      "file",
+      "carrefour",
+      "yemeksepeti",
+      "moneypay",
+      "şok",
+      "bim",
+      "metro",
+      "taktak gida"
     ]
   },
   {
-    "name": "Sağlık",
-    "id": 32253,
+    "name": "Eğlence",
+    "id": 63070,
     "keywords": [
-      "eczane",
-      "ilaç",
-      "ilac",
-      "hastane"
+      "steam",
+      "sinema"
+    ]
+  },
+  {
+    "name": "Alışveriş",
+    "id": 23122,
+    "keywords": [
+      "beymen",
+      "hepsiburada",
+      "amazon",
+      "trendyol",
+      "HEPSİBURADA",
+      "ikea",
+      "decathlon",
+      "unifree",
+      "rossman",
+      "koçtaş"
     ]
   }
 ]

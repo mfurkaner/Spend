@@ -14,6 +14,7 @@ pub struct Category{
 
 static mut EXISTING_CATEGORIES : Vec<Box<Category>> = Vec::new();
 
+pub const UNKNOWN_CATEGORY_NAME : &'static str = "Bilinmeyen";
 pub const UNKNOWN_CATEGORY : Category = Category{
     name : String::new(),
     id : 0,
@@ -45,6 +46,10 @@ impl Category {
     }
 
     pub fn new(name : String, kw : Vec<String>) -> Box<Category>{
+        match Category::get_by_name(&name){
+            Some(_) => panic!("Category with name '{}' already exists!", name),
+            None => {}
+        }
         let nc = Box::new(Category{ name : name , id : Category::generate_id() , keywords : kw});
         unsafe{
             EXISTING_CATEGORIES.push(nc.clone());
@@ -85,13 +90,21 @@ impl Category {
     }
 
     pub fn print_existing_categories(){
-        println!("Existing categories in heap :");
         unsafe{
             for i in 0..EXISTING_CATEGORIES.len(){
                 print!("{}) ", i + 1);
                 EXISTING_CATEGORIES[i].print();
                 println!();
             }
+        }
+    }
+
+    pub fn print_existing_category_names(){
+        unsafe{
+            for i in 0..EXISTING_CATEGORIES.len(){
+                println!("{}) {}", i + 1, EXISTING_CATEGORIES[i].name);
+            }
+            println!();
         }
     }
 
@@ -120,6 +133,20 @@ impl Category {
         None
     }
 
+    pub fn get_by_name(name : &str) -> Option<Box<Category>>{
+        if name == "" {
+            return Some(Box::new(UNKNOWN_CATEGORY));
+        }
+        unsafe{
+            for i in 0..EXISTING_CATEGORIES.len() {
+                if EXISTING_CATEGORIES[i].name.to_lowercase() == name.to_lowercase() {
+                    return Some(EXISTING_CATEGORIES[i].clone());
+                }
+            }
+        }
+        None
+    }
+
     pub fn remove_by_id(id : u16) {
         unsafe{
             for i in 0..EXISTING_CATEGORIES.len() {
@@ -133,7 +160,7 @@ impl Category {
 
     fn is_transaction_in(&self, trans_desc : &str) -> bool {
         for kw in self.keywords.iter(){
-            match trans_desc.to_lowercase().find(kw.to_lowercase().as_str()){
+            match trans_desc.to_uppercase().replace("İ", "I").find(kw.to_uppercase().as_str()){
                 Some(_) => return true,
                 None => continue
             }
@@ -146,7 +173,7 @@ impl Printable for Category{
     fn print(&self) {
         println!("{} :", self.name);
         println!("   id: {}", self.id);
-        println!("   keywords:");
+        println!("   anahtar kelimeler:");
         for i in 0..self.keywords.len(){
             println!("      - \"{}\"", self.keywords[i]);
         }

@@ -47,7 +47,66 @@ impl Money {
             panic!("Addition of different currencies!");
         }
     }
+
+    pub fn from_str(source : &str) -> Option<Money>{
+        struct tp{
+            curr : Currency,
+            kws : Vec<&'static str>
+        };
+        let knowns = [
+            tp{curr: Currency::TL, 
+                kws: ["TL", "₺", "tl"].to_vec()
+            },
+            tp{curr: Currency::USD, 
+                kws: ["USD", "$", "usd"].to_vec()
+            },
+            tp{curr: Currency::EUR, 
+                kws: ["EUR", "€", "eur"].to_vec()
+            },
+        ];
+        let mut curr = Currency::TL;
+        let mut found_curr = false;
+        
+        let mut v : Vec<&str> = source.split(' ').collect();
+        let mut n : String;
+
+        if v.len() == 3{
+            for i in 0..v.len(){
+                if v[i] == "-" && i + 1 < v.len(){
+                    n  = v[i].to_owned() + v[i+1];
+                    v[i] = &n;
+                    v.remove(i + 1);
+                    break;
+                }
+            }
+        }
+        if v.len() == 2{
+            for i in knowns{
+                for j in 0..i.kws.len(){
+                    if v.contains(&i.kws[j]){
+                        curr = i.curr;
+                        found_curr = true;
+                    }
+                }
+            }
+            if found_curr == false {
+                return None;
+            }
+
+            for i in v{
+                let amount : f32 = match i.replace(".", "").replace(",", ".").parse(){
+                    Ok(x) => x,
+                    Err(e) => continue,
+                };
+                return Some(Money::new(amount, curr));
+            }
+        }
+
+        None
+    }
 }
+
+
 impl Printable for Money{
     fn print(&self){
         let amount : String = format!("{} {}", self.amount.to_string(), self.currency.to_str());

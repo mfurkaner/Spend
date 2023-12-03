@@ -33,17 +33,17 @@ impl Database {
 
     pub fn generate_category(&self){
         let mut command = String::new();
-        print!("Enter a {} for the category you want to create\n : ", "name".bold());
+        print!("Oluşturmak istediğin kategorinin {} : ", "ismi".bold());
         _ = io::stdout().flush();
         _ = io::stdin().read_line(&mut command);
         let name = command.trim_end().to_string();
         let mut kws : Vec<String> = Vec::new();
 
-        println!("Enter the {} of this category (maximum 10 keywords, '{}' to exit)", "keywords".bold(), ".q".red().bold());
+        println!("Kategorinin {} (max 10, dönmek için '{}')", "anahtar kelimeleri".bold(), ".q".red().bold());
         
         for i in 0..10{
             let mut command = String::new();
-            print!("keyword {} : ", i + 1);
+            print!("anahtar kelime {} : ", i + 1);
             _ = io::stdout().flush();
             _ = io::stdin().read_line(&mut command);
             if command.trim_end() == ".q"{
@@ -56,29 +56,24 @@ impl Database {
 
     pub fn edit_category(&self){
         let mut c : Box<Category>;
-        let mut id : u16;
         loop {
             let mut command = String::new();
-            print!("Enter the {} of the category you want to edit (return : '{}')\n : ", "id".bold(), ".q".red());
+            Category::print_existing_category_names();
+            print!("Düzenlemek istediğin kategorinin {} (dönmek için '{}')\n : ", "ismi".bold(), ".q".red());
             _ = io::stdout().flush();
             _ = io::stdin().read_line(&mut command);
-            id = match command.trim_end().to_string().parse() {
-                Ok(a) => a,
-                Err(_) => {
-                    if(command.trim_end() == ".q"){
-                        return;
-                    }else{
-                        continue;
-                    }
-                },
-            };
+            if command.trim_end() == ".q"{
+                return;
+            }
     
-            match Category::get_by_id(id) {
+            match Category::get_by_name(command.trim_end()) {
                 Some(a) => {
                     c = a;
                     break;
                 },
-                None => eprint!("ERROR: Category {} not found", id),
+                None => {
+                    eprintln!("{} adlı kategori bulunamadı.", command.trim_end())
+                }
             };
         }
 
@@ -88,87 +83,101 @@ impl Database {
             kws.push(s.to_string());
         }
 
-        println!("Editing category : ");
+        println!("Düzenlenen kategori : ");
         c.print();
 
         loop{
-            println!("   edit - {} : {}, {} : {}, {} : {}, {} : {}", 
-            "name".blue().italic(), ".n".blue().italic(), 
-            "add keyword".green().italic(), ".ak".green().italic(),
-            "remove keyword".yellow().italic(), ".rk".yellow().italic(),
-            "stop edit".red(), ".q".red());
+            println!(" {} : {}\n {} : {}\n {} : {}\n {} : {}", 
+                    "isim".blue().italic(), ".n".blue().italic(), 
+                    "anahtar kelime ekle".green().italic(), ".ak".green().italic(),
+                    "anahtar kelime çıkart".yellow().italic(), ".rk".yellow().italic(),
+                    "düzenlemeyi bitir".red(), ".q".red());
             print!("      : ");
             _ = io::stdout().flush();
             let mut command = String::new();
             _ = io::stdin().read_line(&mut command);
 
-            if command.trim_end() == ".n" {
-                println!("   New {} : ", "name".bold());
-                _ = io::stdout().flush();
-                _ = io::stdin().read_line(&mut command);
-                name = command.trim_end().to_string();
-            }
-            else if command.trim_end() == ".ak" {
-                print!("   New {} : ", "keyword".bold());
-                _ = io::stdout().flush();
-                let mut nk = String::new();
-                _ = io::stdin().read_line(&mut nk);
-                kws.push(nk.trim_end().to_string());
-            }
-            else if command.trim_end() == ".rk" {
-                print!("   Remove {} : ", "keyword".bold());
-                _ = io::stdout().flush();
-                let mut rk = String::new();
-                _ = io::stdin().read_line(&mut rk);
-                for i in 0..kws.len() {
-                    if kws[i] == rk.trim_end(){
-                        kws.remove(i);
-                        break;
+            match command.trim_end() {
+                ".n" => {
+                    println!("   Yeni {} : ", "isim".bold());
+                    _ = io::stdout().flush();
+                    _ = io::stdin().read_line(&mut command);
+                    name = command.trim_end().to_string();
+                }
+                ".ak" => {
+                    print!("   Yeni {} : ", "anahtar kelime".bold());
+                    _ = io::stdout().flush();
+                    let mut nk = String::new();
+                    _ = io::stdin().read_line(&mut nk);
+                    kws.push(nk.trim_end().to_string());
+                }
+                ".rk" => {
+                    print!("   Çıkartılacak {} : ", "anahtar kelime".bold());
+                    _ = io::stdout().flush();
+                    let mut rk = String::new();
+                    _ = io::stdin().read_line(&mut rk);
+                    for i in 0..kws.len() {
+                        if kws[i] == rk.trim_end(){
+                            kws.remove(i);
+                            break;
+                        }
                     }
                 }
-            }
-            else if command.trim_end() == ".q"{
-                break;
-            }
-            else{
-                panic!("Unknown command");
+                ".q" => {
+                    break;
+                }
+                other => {
+                    eprintln!("Bilinmeyen komut! Girdiğiniz komutu kontrol ediniz : {}", command.trim_end());
+                }
             }
         }
         
-        Category::replace(id, name, kws);
+        Category::replace(c.id, name, kws);
     }
 
     pub fn remove_category(&mut self){
-        let mut command = String::new();
-        print!("Enter the {} of the category you want to remove\n : ", "id".bold());
-        _ = io::stdout().flush();
-        _ = io::stdin().read_line(&mut command);
-        let id : u16 = command.trim_end().to_string().parse().unwrap();
+        let mut c : Box<Category>;
+        loop {
+            let mut command = String::new();
+            Category::print_existing_category_names();
+            print!("Çıkartmak istediğin kategorinin {} (dönmek için '{}')\n : ", "ismi".bold(), ".q".red());
+            _ = io::stdout().flush();
+            _ = io::stdin().read_line(&mut command);
 
-        let c = Category::get_by_id(id).unwrap();
+            c = match Category::get_by_name(command.trim_end()){
+                Some(a) => a,
+                None => {
+                    eprintln!("{} adlı kategori bulunamadı.", command.trim_end());
+                    continue;
+                }
+            };
 
-        println!("{} category : ", "Removing".red().bold());
-        c.print();
-        print!("Are you sure? ('{}', '{}') : ", "y".bold(), "n".bold());
-        _ = io::stdout().flush();
-        let mut command = String::new();
-        _ = io::stdin().read_line(&mut command);
-        if command.trim_end() == "y"{
-            Category::remove_by_id(id);
-            println!("Category removed.");
+            let id = c.id;
+
+            println!("Kategori {} {} : ", c.name.yellow(),"çıkartılıyor".red().bold());
+            c.print();
+            print!("Emin misin? ('{}', '{}') : ", "e".bold(), "h".bold());
+            _ = io::stdout().flush();
+            let mut command = String::new();
+            _ = io::stdin().read_line(&mut command);
+            if command.trim_end() == "e"{
+                Category::remove_by_id(id);
+                println!("Kategori çıkartıldı.");
+                break;
+            }
         }
     }
     
     pub fn category_terminal_change(&mut self){
         loop{
             let mut command = String::new();
-            println!("Enter the action for the category database you want to invoke : ");
+            println!("Kategori veritabanında yapmak istediğin işlemi seç : ");
             println!("- {} : {}\n- {} : {}\n- {} : {}\n- {} : {}\n- {} : {}", 
-            "add category".blue().italic(), ".a".blue().italic(), 
-            "edit category".green().italic(), ".e".green().italic(),
-            "remove category".yellow().italic(), ".r".yellow().italic(),
-            "print category database".magenta().italic(), ".p".magenta().italic(),
-            "stop".red(), ".q".red());
+            "kategori ekle".blue().italic(), ".a".blue().italic(), 
+            "kategori düzenle".green().italic(), ".e".green().italic(),
+            "kategori çıkart".yellow().italic(), ".r".yellow().italic(),
+            "kategorileri yazdır".magenta().italic(), ".p".magenta().italic(),
+            "geri".red(), ".q".red());
             _ = io::stdout().flush();
             _ = io::stdin().read_line(&mut command);
             match command.trim_end(){
